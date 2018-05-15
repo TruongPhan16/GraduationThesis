@@ -18,14 +18,23 @@ testData = []
 def readTrainingData(p):
     path = p + '/*.txt'
     files = glob.glob(path)
-    tmp = []
     for name in files:
+    #     with open('data.txt', 'r') as myfile:
+    # data=myfile.read().replace('\n', '')
         with open(name) as f:
-            for line in f:
-                innerList = [float(elt.strip()) for elt in line.split(',')]
-                trainingData.append(innerList)
-
+            data = f.read().replace('\n', ',')
+            data = data.split(',')
+            arrayParse = []
+            for value in data:
+                try:
+                    dataParse = float(value)
+                    arrayParse.append(dataParse)
+                except ValueError,e:
+                    print "error",e
+            trainingData.append(arrayParse)
+    print trainingData
 readTrainingData('sift')
+
 def readTestData(name) :
     name = name + '.txt'
     with open(name) as f:
@@ -33,6 +42,7 @@ def readTestData(name) :
             innerList = [float(elt.strip()) for elt in line.split(',')]
             testData.append(innerList)
 readTestData('test')
+
 def euclidean(vector1, vector2):
     dist = [(a - b)**2 for a, b in zip(np.array(vector1), np.array(vector2))]
     dist = math.sqrt(sum(dist))
@@ -72,7 +82,6 @@ def findDistance(v1, v2, t):
             dist.append(euclidean(i,j))
             # dist = euclidean(i,j)
             # distance.append(dist)
-    print dist
     # minDistance = min(float(s) for s in dist)
     # print distance             
-findDistance(test1, test2,400)
+# findDistance(test1, test2,400)

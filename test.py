@@ -15,25 +15,10 @@ testData = []
 #     np.savetxt(file + '.txt' ,des,delimiter=',')
 # getKpForTestData('test2','test')
 
-def readTrainingData(p):
-    path = p + '/*.txt'
-    files = glob.glob(path)
-    for name in files:
-    #     with open('data.txt', 'r') as myfile:
-    # data=myfile.read().replace('\n', '')
-        with open(name) as f:
-            data = f.read().replace('\n', ',')
-            data = data.split(',')
-            arrayParse = []
-            for value in data:
-                try:
-                    dataParse = float(value)
-                    arrayParse.append(dataParse)
-                except ValueError,e:
-                    print "error",e
-            trainingData.append(arrayParse)
-    print trainingData
-readTrainingData('sift')
+def euclidean(vector1, vector2):
+    dist = [(a - b)**2 for a, b in zip(np.array(vector1), np.array(vector2))]
+    dist = math.sqrt(sum(dist))
+    return dist
 
 def readTestData(name) :
     name = name + '.txt'
@@ -43,45 +28,25 @@ def readTestData(name) :
             testData.append(innerList)
 readTestData('test')
 
-def euclidean(vector1, vector2):
-    dist = [(a - b)**2 for a, b in zip(np.array(vector1), np.array(vector2))]
-    dist = math.sqrt(sum(dist))
-    return dist
-    
-# maxDistance = 0
-# maxCount = 0
-# m = 400
-# indexResult = 0
-# dataCount = []
-# result = []
-# count = 0
-# for i in testData:
-#     minDis = 0
-#     for j in trainingData:
-#         distant = euclidean(i,j)
-#         if (minDis == 0):
-#             minDis = distant
-#         else:
-#             if (distant < minDis):
-#                 minDis = distant
-#     if(minDis < m):
-#         count = count + 1
-# dataCount.append(count)
-# if(count > maxCount):
-#     maxCount = count
-# for j in dataCount:
-#     if (j == maxCount):
-#         result.append(dataCount.index(j))
-# print result
-
+def readTrainingData(p):
+    path = p + '/*.txt'
+    files = glob.glob(path)
+    for name in files:
+        with open(name) as f:
+            data = f.read().strip().replace('\n', ',').split(',')
+            arrayParse = []
+            for value in data:
+                dataParse = float(value)
+                arrayParse.append(dataParse)
+    trainingData.append(arrayParse)
+readTrainingData('sift')
+print trainingData[0][0]
 def findDistance(v1, v2, t):
     distance = []
-    minDistance = 0
     for i in v1:
         for j in v2:
-            dist.append(euclidean(i,j))
-            # dist = euclidean(i,j)
-            # distance.append(dist)
-    # minDistance = min(float(s) for s in dist)
-    # print distance             
-# findDistance(test1, test2,400)
+            dist = euclidean(i,j)
+            distance.append(dist)
+    # minDistance = min(float(s) for s in distance)
+    return minn
+# print(findDistance(testData, trainingData,400))

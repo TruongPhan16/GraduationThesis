@@ -17,4 +17,4 @@ for n in range(0, len(files)):
   kp = sift.detect(images[n],None)
   kp,des = sift.compute(gray,kp)
   fileName.append(os.path.splitext(os.path.basename(files[n]))[0])
-  np.savetxt(dirFolder + '/' + str(fileName[n]) + '-sift' + '.txt' ,des,delimiter=',')
+  np.savetxt(dirFolder + '/' + str(fileName[n]) + '.txt' ,des,delimiter=',')

@@ -3,12 +3,20 @@ import numpy as np
 import math
 import glob
 import sift as sift
+import orb as orb
+import surf as surf
 
 trainingData = []
 testData = []
 
-fileList = sift.getKpForTrainingData('training','sift')
-sift.getKpForTestData('test-sift','test-sift')
+# fileList = sift.getKpForTrainingData('training','sift')
+# sift.getKpForTestData('test-sift','test-sift')
+
+# fileList = orb.getKpForTrainingData('training','orb')
+# orb.getKpForTestData('test-orb','test-orb')
+
+fileList = orb.getKpForTrainingData('training','surf')
+orb.getKpForTestData('test-surf','test-surf')
 
 def euclidean(vector1, vector2):
     dist = [(a - b)**2 for a, b in zip(np.array(vector1), np.array(vector2))]
@@ -21,8 +29,6 @@ def findDistance(v1, v2, t):
         distance = []
         for j in v2:
             dist = euclidean(i,j)
-            # distance.append(dist)
-        # minDistance = min(float(s) for s in distance)
             if (dist < t):
                 count +=1
     return float(count) / float(len(v1) * len(v2))
@@ -33,7 +39,7 @@ def readTestData(name) :
         for line in f:
             innerList = [float(elt.strip()) for elt in line.split(',')]
             testData.append(innerList)
-readTestData('test-sift')
+readTestData('test-surf')
 
 def readTrainingData(p):
     path = p + '/*.txt'
@@ -57,7 +63,7 @@ def readTrainingData(p):
     maxIndices = np.array(arrResult).argsort()[::-1][:5]
     return maxIndices
 
-filledImages = readTrainingData('sift')
+filledImages = readTrainingData('surf')
 for index in filledImages:
     image = cv2.imread('training/' + fileList[index] + '.jpg') 
     cv2.imshow('image',image)

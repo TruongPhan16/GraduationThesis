@@ -4,9 +4,9 @@ import os
 from os import listdir
 from os.path import isfile, join
 
+sift = cv2.xfeatures2d.SIFT_create()
 def getKpForTrainingData(path,folder):
   fileName = []
-  sift = cv2.xfeatures2d.SIFT_create()
   files = [ f for f in listdir(path) if isfile(join(path,f)) ]
   images = np.empty(len(files), dtype=object)
   if not os.path.exists(folder):
@@ -21,7 +21,6 @@ def getKpForTrainingData(path,folder):
   return fileName
   
 def getKpForTestData(img,file):
-  sift = cv2.xfeatures2d.SIFT_create()
   image = cv2.imread(img + '.jpg')
   gray= cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
   kp = sift.detect(image,None)

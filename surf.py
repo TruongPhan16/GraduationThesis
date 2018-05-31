@@ -3,7 +3,6 @@ import cv2
 import os
 from os import listdir
 from os.path import isfile, join
-import csv
 
 surf = cv2.xfeatures2d.SURF_create()
 path = 'training'

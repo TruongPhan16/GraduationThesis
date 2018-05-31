@@ -3,7 +3,7 @@ import cv2
 import os
 from os import listdir
 from os.path import isfile, join
-import csv
+
 
 orb = cv2.ORB_create()
 path = 'training'

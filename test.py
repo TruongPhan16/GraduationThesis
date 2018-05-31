@@ -2,22 +2,13 @@ import cv2
 import numpy as np
 import math
 import glob
+import sift as sift
 
 trainingData = []
 testData = []
 
-# img = cv2.imread('training/i037sb-fn.jpg',0)
-# cv2.imshow('test', img)
-# cv2.waitKey(0)
-
-def getKpForTestData(img,file):
-    sift = cv2.xfeatures2d.SIFT_create()
-    image = cv2.imread(img + '.jpg',1)
-    gray= cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
-    kp = sift.detect(image,None)
-    kp,des = sift.compute(gray,kp)
-    np.savetxt(file + '.txt' ,des,delimiter=',')
-getKpForTestData('test2','test')
+fileList = sift.getKpForTrainingData('training','sift')
+sift.getKpForTestData('test-sift','test-sift')
 
 def euclidean(vector1, vector2):
     dist = [(a - b)**2 for a, b in zip(np.array(vector1), np.array(vector2))]
@@ -42,7 +33,7 @@ def readTestData(name) :
         for line in f:
             innerList = [float(elt.strip()) for elt in line.split(',')]
             testData.append(innerList)
-readTestData('test')
+readTestData('test-sift')
 
 def readTrainingData(p):
     path = p + '/*.txt'
@@ -63,8 +54,12 @@ def readTrainingData(p):
     for img in trainingData:
         result = findDistance(testData,img,200)
         arrResult.append(result)
-    maxResult = max(arrResult)
-    index = arrResult.index(maxResult)
-    print arrResult
-    # [i for i, j in enumerate(arrResult) if j == maxResult]
-readTrainingData('sift')
+    maxIndices = np.array(arrResult).argsort()[::-1][:5]
+    return maxIndices
+
+filledImages = readTrainingData('sift')
+for index in filledImages:
+    image = cv2.imread('training/' + fileList[index] + '.jpg') 
+    cv2.imshow('image',image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()

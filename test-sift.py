@@ -9,14 +9,8 @@ import surf as surf
 trainingData = []
 testData = []
 
-# fileList = sift.getKpForTrainingData('training','sift')
-# sift.getKpForTestData('test-sift','test-sift')
-
-# fileList = orb.getKpForTrainingData('training','orb')
-# orb.getKpForTestData('test-orb','test-orb')
-
-fileList = orb.getKpForTrainingData('training','surf')
-orb.getKpForTestData('test-surf','test-surf')
+fileList = sift.getKpForTrainingData('training','sift')
+sift.getKpForTestData('test-sift','test-sift')
 
 def euclidean(vector1, vector2):
     dist = [(a - b)**2 for a, b in zip(np.array(vector1), np.array(vector2))]
@@ -39,7 +33,7 @@ def readTestData(name) :
         for line in f:
             innerList = [float(elt.strip()) for elt in line.split(',')]
             testData.append(innerList)
-readTestData('test-surf')
+readTestData('test-sift')
 
 def readTrainingData(p):
     path = p + '/*.txt'
@@ -63,9 +57,14 @@ def readTrainingData(p):
     maxIndices = np.array(arrResult).argsort()[::-1][:5]
     return maxIndices
 
-filledImages = readTrainingData('surf')
+filledImages = readTrainingData('sift')
 for index in filledImages:
     image = cv2.imread('training/' + fileList[index] + '.jpg') 
     cv2.imshow('image',image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
+#chạy tất cả các ảnh trong csdl -> tìm 5 ảnh gần nhất.
+#số ảnh đúng trong 5 ảnh là n  là n => tỉ lệ sẽ là n/5
+#tỉ lệ chính xác sẽ bằng tổng số tỷ lệ / tổng số ảnh
+#phương pháp nào có tỉ lệ cao nhất

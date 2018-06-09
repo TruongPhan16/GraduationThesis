@@ -3,10 +3,13 @@ import numpy as np
 import math
 import glob
 import surf as surf
+from collections import Counter
 
 trainingData = []
 testData = []
-fileList = surf.getKpFromImages('training','surf')
+k = 8
+fileNameTraining = surf.getKpFromImages('training','surf')
+fileNameTest = surf.getKpFromImages('test-images','test-data')
 
 def euclidean(vector1, vector2):
     dist = [(a - b)**2 for a, b in zip(np.array(vector1), np.array(vector2))]
@@ -20,7 +23,7 @@ def findDistance(v1, v2, t):
         for j in v2:
             dist = euclidean(i,j)
             if (dist < t):
-                count +=1
+                count += 1
     return float(count) / float(len(v1) * len(v2))
 
 def readTestData(path) :
@@ -38,7 +41,7 @@ def readTestData(path) :
                     arrayParse.append(dataParse)
                 dataArrParse.append(arrayParse)
             testData.append(dataArrParse)
-readTestData('surf')
+readTestData('test-data')
 
 def readTrainingData(path):
     path = path + '/*.txt'
@@ -59,9 +62,9 @@ def readTrainingData(path):
     for tr in testData:
         tmp = []
         for te in trainingData:
-            result = findDistance(tr,te,200)
+            result = findDistance(tr,te,300)
             tmp.append(result)
-        tmp = np.array(tmp).argsort()[::-1][:5]
+        tmp = np.array(tmp).argsort()[::-1][:k]
         arrResult.append(tmp)
     return arrResult
 
@@ -69,13 +72,15 @@ def calculateEfficiency():
     filledImages = readTrainingData('surf')
     total = 0
     for (key, value) in enumerate(filledImages):
-        imageNameTest = fileList[key]
-        countSameName = 0
+        imageNameTest = fileNameTest[key]
+        arr = []
         for index in value:
-            imageNameTrain = fileList[index]
-            if imageNameTest[:4] == imageNameTrain[:4]:
-                countSameName += 1
-        total += countSameName/5
-    efficiency = total / len(fileList)
+            image = fileNameTraining[index]
+            arr.append(image)
+            imageNameTrain = Counter(arr).most_common(1)[0][0]
+        if imageNameTest[:4] == imageNameTrain[:4]:
+            total += 1
+    efficiency = float(total) / float(len(fileNameTest))
     print efficiency
 calculateEfficiency()
+

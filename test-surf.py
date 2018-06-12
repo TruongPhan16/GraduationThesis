@@ -8,8 +8,8 @@ from collections import Counter
 trainingData = []
 testData = []
 k = 8
-fileNameTraining = surf.getKpFromImages('training','surf')
-fileNameTest = surf.getKpFromImages('test-images','test-data')
+# fileNameTraining = surf.getKpFromImages('training','surf')
+# fileNameTest = surf.getKpFromImages('test-images','test-data')
 
 def euclidean(vector1, vector2):
     dist = [(a - b)**2 for a, b in zip(np.array(vector1), np.array(vector2))]
@@ -19,7 +19,6 @@ def euclidean(vector1, vector2):
 def findDistance(v1, v2, t):
     count = 0
     for i in v1:
-        distance = []
         for j in v2:
             dist = euclidean(i,j)
             if (dist < t):
@@ -41,7 +40,7 @@ def readTestData(path) :
                     arrayParse.append(dataParse)
                 dataArrParse.append(arrayParse)
             testData.append(dataArrParse)
-readTestData('test-data')
+# readTestData('test-data')
 
 def readTrainingData(path):
     path = path + '/*.txt'
@@ -82,5 +81,5 @@ def calculateEfficiency():
             total += 1
     efficiency = float(total) / float(len(fileNameTest))
     print efficiency
-calculateEfficiency()
+# calculateEfficiency()
 

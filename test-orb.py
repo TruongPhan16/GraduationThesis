@@ -4,6 +4,8 @@ import math
 import glob
 import orb as orb
 from collections import Counter
+# from os import listdir
+import time
 
 trainingData = [] #135 anh
 testData = [] #16 anh
@@ -11,6 +13,9 @@ k = 5
 fileNameTraining = orb.getKpFromImages('training','orb')
 fileNameTest = orb.getKpFromImages('test-images', 'test-data')
 #t = 300 is best
+# l=listdir('orb')
+# li=[x.split('.')[0] for x in l]
+
 def euclidean(vector1, vector2):
     dist = [(a - b)**2 for a, b in zip(np.array(vector1), np.array(vector2))]
     dist = math.sqrt(sum(dist))
@@ -18,7 +23,6 @@ def euclidean(vector1, vector2):
 def findDistance(v1, v2, t):
     count = 0
     for i in v1:
-        distance = []
         for j in v2:
             dist = euclidean(i,j)
             if (dist < t):
@@ -79,6 +83,5 @@ def calculateEfficiency():
         if imageNameTest[:4] == imageNameTrain[:4]:
             total += 1
     efficiency = float(total) / float(len(fileNameTest))
-    print total
     print efficiency
 calculateEfficiency()
